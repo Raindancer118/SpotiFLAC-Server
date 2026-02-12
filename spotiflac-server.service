@@ -1,0 +1,57 @@
+[Unit]
+Description=SpotiFLAC Server - Music Download Service
+Documentation=https://github.com/afkarxyz/SpotiFLAC
+After=network.target
+
+[Service]
+Type=simple
+
+# Run as dedicated user (rule #10: Least Privilege - don't run as root)
+User=spotiflac
+Group=spotiflac
+
+# Working directory
+WorkingDirectory=/opt/spotiflac
+
+# Start the server
+ExecStart=/opt/spotiflac/spotiflac-server
+
+# Restart policy
+Restart=on-failure
+RestartSec=10s
+
+# Resource limits (rule #10: Least Privilege)
+# Limit memory usage to prevent resource exhaustion
+MemoryLimit=2G
+
+# Limit number of file descriptors
+LimitNOFILE=65536
+
+# Security hardening (rule #10: Least Privilege & rule #14: Secure by Default)
+# Prevent privilege escalation
+NoNewPrivileges=true
+
+# Make /usr, /boot, and /etc read-only
+ProtectSystem=strict
+
+# Make /home, /root, and /run/user inaccessible
+ProtectHome=true
+
+# Allow writing to app directory and download path
+ReadWritePaths=/opt/spotiflac
+
+# Make /tmp and /var/tmp private
+PrivateTmp=true
+
+# Deny access to kernel logs
+ProtectKernelLogs=true
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+
+# Log level
+SyslogIdentifier=spotiflac-server
+
+[Install]
+WantedBy=multi-user.target

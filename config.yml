@@ -1,0 +1,70 @@
+# SpotiFLAC Server Configuration
+
+server:
+  # Server host and port configuration
+  host: "0.0.0.0"
+  port: 8080
+  
+  # CORS allowed origins - add your frontend URLs
+  cors_origins:
+    - "http://localhost:5173"  # Vite dev server
+    - "http://localhost:8080"  # Production Nginx
+
+# Download settings
+download:
+  # Default download path - will use ~/Music if not set
+  path: ""
+  
+  # Filename format: "title-artist", "artist-title", "track-title", etc.
+  filename_format: "title-artist"
+  
+  # Audio format: "LOSSLESS", "6", "7", "27" for different quality levels
+  audio_format: "LOSSLESS"
+  
+  # Embed lyrics in downloaded files
+  embed_lyrics: true
+  
+  # Embed maximum quality cover art
+  embed_max_quality_cover: true
+  
+  # Include track number in filename
+  track_number: false
+  
+  # Use album track number instead of playlist position
+  use_album_track_number: false
+  
+  # Use only first artist in filename (removes features)
+  use_first_artist_only: false
+  
+  # Allow fallback to other services if primary fails
+  allow_fallback: true
+
+# Streaming service configuration
+services:
+  # Default service: "tidal", "qobuz", "amazon"
+  default_service: "tidal"
+  
+  # Tidal API URL (leave empty for auto-selection)
+  tidal_api_url: ""
+  
+  # Use SpotFetch API for metadata (bypasses geo-restrictions)
+  use_spotfetch_api: false
+  
+  # SpotFetch API URL
+  spotfetch_api_url: ""
+
+# UI preferences (used by web frontend)
+ui:
+  # Theme: "default", "nord", "dracula", etc.
+  theme: "default"
+  
+  # Theme mode: "light", "dark", "auto"
+  theme_mode: "auto"
+  
+  # Font family
+  font_family: "Inter"
+
+# Database configuration
+database:
+  # Path to SQLite database for history
+  path: "SpotiFLAC"
