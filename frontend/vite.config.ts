@@ -3,9 +3,11 @@ import fs from "fs";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+
 const wailsJsonPath = path.resolve(__dirname, "../wails.json");
 const wailsJson = JSON.parse(fs.readFileSync(wailsJsonPath, "utf-8"));
 const appVersion = wailsJson.info.productVersion;
+
 export default defineConfig({
     plugins: [react(), tailwindcss()],
     resolve: {
@@ -15,5 +17,27 @@ export default defineConfig({
     },
     define: {
         __APP_VERSION__: JSON.stringify(appVersion),
+    },
+    server: {
+        port: 5173,
+        // Proxy API requests to backend server during development
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8080',
+                changeOrigin: true,
+            },
+            '/ws': {
+                target: 'ws://localhost:8080',
+                ws: true,
+            },
+            '/health': {
+                target: 'http://localhost:8080',
+                changeOrigin: true,
+            },
+        },
+    },
+    build: {
+        outDir: 'dist',
+        emptyOutDir: true,
     },
 });

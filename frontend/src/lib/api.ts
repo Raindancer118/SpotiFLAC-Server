@@ -1,6 +1,15 @@
 import type { SpotifyMetadataResponse, DownloadRequest, DownloadResponse, HealthResponse, LyricsDownloadRequest, LyricsDownloadResponse, CoverDownloadRequest, CoverDownloadResponse, HeaderDownloadRequest, HeaderDownloadResponse, GalleryImageDownloadRequest, GalleryImageDownloadResponse, AvatarDownloadRequest, AvatarDownloadResponse, } from "@/types/api";
-import { GetSpotifyMetadata, DownloadTrack, DownloadLyrics, DownloadCover, DownloadHeader, DownloadGalleryImage, DownloadAvatar } from "../../wailsjs/go/main/App";
-import { main } from "../../wailsjs/go/models";
+import { apiClient } from "../api/client";
+
+// Re-export API client methods for compatibility
+export const GetSpotifyMetadata = (req: any) => apiClient.GetSpotifyMetadata(req);
+export const DownloadTrack = (req: any) => apiClient.DownloadTrack(req);
+export const DownloadLyrics = (req: any) => apiClient.DownloadLyrics(req);
+export const DownloadCover = (req: any) => apiClient.DownloadCover(req);
+// Note: Image download functions would need server endpoints
+export const DownloadHeader = (req: any) => Promise.resolve({ success: false });
+export const DownloadGalleryImage = (req: any) => Promise.resolve({ success: false });
+export const DownloadAvatar = (req: any) => Promise.resolve({ success: false });
 export async function fetchSpotifyMetadata(url: string, batch: boolean = true, delay: number = 1.0, timeout: number = 300.0): Promise<SpotifyMetadataResponse> {
     const req = new main.SpotifyMetadataRequest({
         url,

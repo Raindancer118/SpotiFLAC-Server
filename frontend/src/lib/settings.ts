@@ -1,4 +1,8 @@
-import { GetDefaults, LoadSettings, SaveSettings as SaveToBackend } from "../../wailsjs/go/main/App";
+import { apiClient } from "../api/client";
+
+const GetDefaults = () => apiClient.GetDefaults();
+const LoadSettings = () => apiClient.LoadSettings();
+const SaveToBackend = (settings: Record<string, any>) => apiClient.SaveSettings(settings);
 export type FontFamily = "google-sans" | "inter" | "poppins" | "roboto" | "dm-sans" | "plus-jakarta-sans" | "manrope" | "space-grotesk" | "noto-sans" | "nunito-sans" | "figtree" | "raleway" | "public-sans" | "outfit" | "jetbrains-mono" | "geist-sans" | "bricolage-grotesque";
 export type FolderPreset = "none" | "artist" | "album" | "year-album" | "year-artist-album" | "artist-album" | "artist-year-album" | "artist-year-nested-album" | "album-artist" | "album-artist-album" | "album-artist-year-album" | "album-artist-year-nested-album" | "year" | "year-artist" | "custom";
 export type FilenamePreset = "title" | "title-artist" | "artist-title" | "track-title" | "track-title-artist" | "track-artist-title" | "title-album-artist" | "track-title-album-artist" | "artist-album-title" | "track-dash-title" | "disc-track-title" | "disc-track-title-artist" | "custom";
@@ -118,24 +122,24 @@ export const FONT_OPTIONS: {
     label: string;
     fontFamily: string;
 }[] = [
-    { value: "bricolage-grotesque", label: "Bricolage Grotesque", fontFamily: '"Bricolage Grotesque", system-ui, sans-serif' },
-    { value: "dm-sans", label: "DM Sans", fontFamily: '"DM Sans", system-ui, sans-serif' },
-    { value: "figtree", label: "Figtree", fontFamily: '"Figtree", system-ui, sans-serif' },
-    { value: "geist-sans", label: "Geist Sans", fontFamily: '"Geist", system-ui, sans-serif' },
-    { value: "google-sans", label: "Google Sans", fontFamily: '"Google Sans", system-ui, sans-serif' },
-    { value: "inter", label: "Inter", fontFamily: '"Inter", system-ui, sans-serif' },
-    { value: "jetbrains-mono", label: "JetBrains Mono", fontFamily: '"JetBrains Mono", ui-monospace, monospace' },
-    { value: "manrope", label: "Manrope", fontFamily: '"Manrope", system-ui, sans-serif' },
-    { value: "noto-sans", label: "Noto Sans", fontFamily: '"Noto Sans", system-ui, sans-serif' },
-    { value: "nunito-sans", label: "Nunito Sans", fontFamily: '"Nunito Sans", system-ui, sans-serif' },
-    { value: "outfit", label: "Outfit", fontFamily: '"Outfit", system-ui, sans-serif' },
-    { value: "plus-jakarta-sans", label: "Plus Jakarta Sans", fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif' },
-    { value: "poppins", label: "Poppins", fontFamily: '"Poppins", system-ui, sans-serif' },
-    { value: "public-sans", label: "Public Sans", fontFamily: '"Public Sans", system-ui, sans-serif' },
-    { value: "raleway", label: "Raleway", fontFamily: '"Raleway", system-ui, sans-serif' },
-    { value: "roboto", label: "Roboto", fontFamily: '"Roboto", system-ui, sans-serif' },
-    { value: "space-grotesk", label: "Space Grotesk", fontFamily: '"Space Grotesk", system-ui, sans-serif' },
-];
+        { value: "bricolage-grotesque", label: "Bricolage Grotesque", fontFamily: '"Bricolage Grotesque", system-ui, sans-serif' },
+        { value: "dm-sans", label: "DM Sans", fontFamily: '"DM Sans", system-ui, sans-serif' },
+        { value: "figtree", label: "Figtree", fontFamily: '"Figtree", system-ui, sans-serif' },
+        { value: "geist-sans", label: "Geist Sans", fontFamily: '"Geist", system-ui, sans-serif' },
+        { value: "google-sans", label: "Google Sans", fontFamily: '"Google Sans", system-ui, sans-serif' },
+        { value: "inter", label: "Inter", fontFamily: '"Inter", system-ui, sans-serif' },
+        { value: "jetbrains-mono", label: "JetBrains Mono", fontFamily: '"JetBrains Mono", ui-monospace, monospace' },
+        { value: "manrope", label: "Manrope", fontFamily: '"Manrope", system-ui, sans-serif' },
+        { value: "noto-sans", label: "Noto Sans", fontFamily: '"Noto Sans", system-ui, sans-serif' },
+        { value: "nunito-sans", label: "Nunito Sans", fontFamily: '"Nunito Sans", system-ui, sans-serif' },
+        { value: "outfit", label: "Outfit", fontFamily: '"Outfit", system-ui, sans-serif' },
+        { value: "plus-jakarta-sans", label: "Plus Jakarta Sans", fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif' },
+        { value: "poppins", label: "Poppins", fontFamily: '"Poppins", system-ui, sans-serif' },
+        { value: "public-sans", label: "Public Sans", fontFamily: '"Public Sans", system-ui, sans-serif' },
+        { value: "raleway", label: "Raleway", fontFamily: '"Raleway", system-ui, sans-serif' },
+        { value: "roboto", label: "Roboto", fontFamily: '"Roboto", system-ui, sans-serif' },
+        { value: "space-grotesk", label: "Space Grotesk", fontFamily: '"Space Grotesk", system-ui, sans-serif' },
+    ];
 export function applyFont(fontFamily: FontFamily): void {
     const font = FONT_OPTIONS.find(f => f.value === fontFamily);
     if (font) {
