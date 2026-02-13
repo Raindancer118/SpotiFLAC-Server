@@ -10,7 +10,7 @@ interface DownloadQueueProps {
     onClose: () => void;
 }
 export function DownloadQueue({ isOpen, onClose }: DownloadQueueProps) {
-    const [queueInfo, setQueueInfo] = useState<backend.DownloadQueueInfo>(new backend.DownloadQueueInfo({
+    const [queueInfo, setQueueInfo] = useState<any>(new any({
         is_downloading: false,
         queue: [],
         current_speed: 0,
