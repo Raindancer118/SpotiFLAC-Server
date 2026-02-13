@@ -6,14 +6,11 @@ FROM node:20-alpine AS frontend-builder
 
 WORKDIR /app/frontend
 
-# Copy package files
-COPY frontend/package.json frontend/pnpm-lock.yaml ./
+# Copy all frontend files first (postinstall script needs scripts/generate-icon.js)
+COPY frontend/ .
 
 # Install pnpm and dependencies
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
-
-# Copy frontend source
-COPY frontend/ .
 
 # Build frontend for production
 RUN pnpm run build
