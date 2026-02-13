@@ -65,7 +65,7 @@ export function HistoryPage({ onHistorySelect }: HistoryPageProps) {
     const ITEMS_PER_PAGE = 50;
     const fetchDownloadHistory = async () => {
         try {
-            const items = await GetDownloadHistory();
+            const items = await apiClient.GetDownloadHistory();
             setDownloadHistory(items || []);
         }
         catch (err) {
@@ -74,7 +74,7 @@ export function HistoryPage({ onHistorySelect }: HistoryPageProps) {
     };
     const fetchFetchHistory = async () => {
         try {
-            const items = await GetFetchHistory();
+            const items = await apiClient.GetFetchHistory();
             setFetchHistory(items || []);
         }
         catch (err) {
@@ -176,22 +176,22 @@ export function HistoryPage({ onHistorySelect }: HistoryPageProps) {
         }
     };
     const handleClearDownloadHistory = async () => {
-        await ClearDownloadHistory();
+        await apiClient.ClearDownloadHistory();
         fetchDownloadHistory();
         setShowClearDownloadConfirm(false);
     };
     const handleDeleteDownloadItem = async (id: string) => {
-        await DeleteDownloadHistoryItem(id);
+        await apiClient.DeleteDownloadHistoryItem(id);
         setDownloadHistory(prev => prev.filter(item => item.id !== id));
     };
     const handleClearFetchHistory = async () => {
-        await ClearFetchHistoryByType(activeFetchTab);
+        await apiClient.ClearFetchHistoryByType(activeFetchTab);
         fetchFetchHistory();
         setShowClearFetchConfirm(false);
     };
     const handleDeleteFetchItem = async (id: string, e: React.MouseEvent) => {
         e.stopPropagation();
-        await DeleteFetchHistoryItem(id);
+        await apiClient.DeleteFetchHistoryItem(id);
         setFetchHistory(prev => prev.filter(item => item.id !== id));
     };
     const getPaginationPages = (current: number, total: number): (number | 'ellipsis')[] => {

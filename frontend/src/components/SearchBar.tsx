@@ -374,7 +374,7 @@ export function SearchBar({ url, loading, onUrlChange, onFetch, onFetchUrl, hist
                 setSearchResults((prev) => {
                     if (!prev)
                         return prev;
-                    const updated = new SearchResponse({
+                    const updated: SearchResponse = {
                         tracks: activeTab === "tracks"
                             ? [...prev.tracks, ...moreResults]
                             : prev.tracks,
@@ -387,7 +387,7 @@ export function SearchBar({ url, loading, onUrlChange, onFetch, onFetchUrl, hist
                         playlists: activeTab === "playlists"
                             ? [...prev.playlists, ...moreResults]
                             : prev.playlists,
-                    });
+                    };
                     return updated;
                 });
             }
