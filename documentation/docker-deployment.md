@@ -1,26 +1,42 @@
 # Docker Deployment Guide
 
+## How SpotiFLAC Works
+
+**Important:** SpotiFLAC does **NOT require Spotify API credentials**! 
+
+The app works by:
+1. **Input:** You provide a Spotify URL (track, album, or playlist)
+2. **Metadata:** App fetches metadata from Spotify (public API, no credentials needed)
+3. **Download:** Music is downloaded from **Tidal, Qobuz, or Amazon Music** (via public APIs)
+4. **Tagging:** Downloaded files are tagged with Spotify metadata
+
+**Supported streaming services for downloads:**
+- 🎵 **Tidal** (Default, FLAC quality)
+- 🎵 **Qobuz** (Hi-Res FLAC)
+- 🎵 **Amazon Music** (Fallback)
+
 ## Quick Start
 
-1. **Copy environment template:**
-   ```bash
-   cp .env.example .env
-   ```
-
-2. **Edit `.env` with your Spotify credentials:**
-   ```bash
-   nano .env
-   ```
-
-3. **Build and start:**
+1. **Start with Docker Compose:**
    ```bash
    docker-compose up -d
    ```
 
-4. **Access the web interface:**
+2. **Access the web interface:**
    ```
    http://localhost:8080
    ```
+
+That's it! No configuration needed for basic usage.
+
+## Advanced Configuration (Optional)
+
+If you want to customize settings, create a `.env` file:
+
+```bash
+cp .env.example .env
+nano .env
+```
 
 ## Docker Build
 
@@ -69,15 +85,16 @@ docker rm spotiflac
 
 ### Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `SPOTIFY_CLIENT_ID` | Spotify API Client ID | Required |
-| `SPOTIFY_CLIENT_SECRET` | Spotify API Client Secret | Required |
-| `SERVER_PORT` | HTTP server port | `8080` |
-| `WEB_DIR` | Frontend files directory | `/app/web` |
-| `DATABASE_PATH` | SQLite database path | `/app/data/spotiflac.db` |
-| `LOG_LEVEL` | Logging level (debug/info/warn/error) | `info` |
-| `TZ` | Timezone | `UTC` |
+| Variable | Description | Default | Required |
+|----------|-------------|---------|----------|
+| `SERVER_PORT` | HTTP server port | `8080` | No |
+| `WEB_DIR` | Frontend files directory | `/app/web` | No |
+| `DATABASE_PATH` | SQLite database path | `/app/data/spotiflac.db` | No |
+| `LOG_LEVEL` | Logging level (debug/info/warn/error) | `info` | No |
+| `TZ` | Timezone | `UTC` | No |
+| `TIDAL_API_URL` | Custom Tidal API endpoint | Public API | No |
+| `QOBUZ_API_URL` | Custom Qobuz API endpoint | Public API | No |
+| `AMAZON_API_URL` | Custom Amazon Music API endpoint | Public API | No |
 
 ### Volumes
 
