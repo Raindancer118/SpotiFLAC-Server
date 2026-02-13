@@ -29,6 +29,9 @@ RUN apk add --no-cache git gcc musl-dev
 # Copy go mod files
 COPY go.mod go.sum ./
 
+# Set GOTOOLCHAIN to auto to allow using newer Go versions
+ENV GOTOOLCHAIN=auto
+
 # Download dependencies
 RUN go mod download
 
