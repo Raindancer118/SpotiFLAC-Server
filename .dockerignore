@@ -6,11 +6,9 @@ dist/
 *.so
 *.dylib
 
-# Frontend
+# Frontend node_modules (but keep lockfile!)
 frontend/node_modules/
 frontend/dist/
-frontend/.vite/
-frontend/pnpm-lock.yaml
 
 # Go
 vendor/
