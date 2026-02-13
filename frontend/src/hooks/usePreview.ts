@@ -29,7 +29,7 @@ export function usePreview() {
                 setPlayingTrack(null);
             }
             setLoadingPreview(trackId);
-            const previewURL = await GetPreviewURL(trackId);
+            const previewURL = await apiClient.GetPreviewURL(trackId);
             if (!previewURL) {
                 toast.error("Preview not available", {
                     description: `No preview found for "${trackName}"`,

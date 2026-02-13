@@ -15,7 +15,7 @@ export function useDownloadProgress() {
     useEffect(() => {
         const pollProgress = async () => {
             try {
-                const progressInfo = await GetDownloadProgress();
+                const progressInfo = await apiClient.GetDownloadProgress();
                 setProgress(progressInfo);
             }
             catch (error) {

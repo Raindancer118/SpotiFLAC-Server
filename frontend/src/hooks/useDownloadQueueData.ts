@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { apiClient } from "../api/client";
 export function useDownloadQueueData() {
-    const [queueInfo, setQueueInfo] = useState<any>(new any({
+    const [queueInfo, setQueueInfo] = useState<any>({
         is_downloading: false,
         queue: [],
         current_speed: 0,
@@ -11,11 +11,11 @@ export function useDownloadQueueData() {
         completed_count: 0,
         failed_count: 0,
         skipped_count: 0,
-    }));
+    });
     useEffect(() => {
         const fetchQueue = async () => {
             try {
-                const info = await GetDownloadQueue();
+                const info = await apiClient.GetDownloadQueue();
                 setQueueInfo(info);
             }
             catch (error) {

@@ -210,7 +210,7 @@ export function FileManagerPage() {
   const allCoverFiles = getAllFilesFlat(filterFilesByType(allFiles, "cover"));
   const handleSelectFolder = async () => {
     try {
-      const path = await SelectFolder(rootPath);
+      const path = await apiClient.SelectFolder(rootPath);
       if (path)
         setRootPath(path);
     }

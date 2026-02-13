@@ -23,7 +23,7 @@ type MessageHandler = (data: any) => void;
  */
 class WebSocketClient {
     private ws: WebSocket | null = null;
-    private reconnectTimer: NodeJS.Timeout | null = null;
+    private reconnectTimer: number | null = null;
     private handlers: Map<string, Set<MessageHandler>> = new Map();
     private reconnectAttempts = 0;
     private maxReconnectAttempts = 10;

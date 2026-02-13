@@ -141,7 +141,7 @@ export function AudioConverterPage() {
     }, []);
     const handleSelectFiles = async () => {
         try {
-            const selectedFiles = await SelectAudioFiles();
+            const selectedFiles = await apiClient.SelectAudioFiles();
             if (selectedFiles && selectedFiles.length > 0) {
                 addFiles(selectedFiles);
             }
@@ -173,16 +173,16 @@ export function AudioConverterPage() {
             const newFiles: AudioFile[] = validPaths
                 .filter((path) => !prev.some((f) => f.path === path))
                 .map((path) => {
-                const name = path.split(/[/\\]/).pop() || path;
-                const ext = name.slice(name.lastIndexOf(".") + 1).toLowerCase();
-                return {
-                    path,
-                    name,
-                    format: ext,
-                    size: fileSizes[path] || 0,
-                    status: "pending" as const,
-                };
-            });
+                    const name = path.split(/[/\\]/).pop() || path;
+                    const ext = name.slice(name.lastIndexOf(".") + 1).toLowerCase();
+                    return {
+                        path,
+                        name,
+                        format: ext,
+                        size: fileSizes[path] || 0,
+                        status: "pending" as const,
+                    };
+                });
             if (newFiles.length > 0) {
                 if (paths.length > newFiles.length) {
                     const skipped = paths.length - newFiles.length;
@@ -200,16 +200,16 @@ export function AudioConverterPage() {
             return prev;
         });
     }, []);
-    const handleFileDrop = useCallback(async (_x: number, _y: number, paths: string[]) => {
+    const handleFileDrop = useCallback(async (x: number, y: number, paths: string[]) => {
         setIsDragging(false);
         if (paths.length === 0)
             return;
         addFiles(paths);
     }, [addFiles]);
     useEffect(() => {
-        OnFileDrop((x, y, paths) => {
+        OnFileDrop((x: number, y: number, paths: string[]) => {
             handleFileDrop(x, y, paths);
-        }, true);
+        });
         return () => {
             OnFileDropOff();
         };
@@ -236,14 +236,13 @@ export function AudioConverterPage() {
                 }
                 return f;
             }));
-            const results = await ConvertAudio({
-                input_files: inputPaths,
+            const results = await apiClient.ConvertAudio({
+                input_path: inputPaths[0],
                 output_format: outputFormat,
                 bitrate: bitrate,
-                codec: outputFormat === "m4a" ? m4aCodec : "",
             });
             setFiles((prev) => prev.map((f) => {
-                const result = results.find((r) => r.input_file === f.path || r.input_file.toLowerCase() === f.path.toLowerCase());
+                const result = results.find((r: any) => r.input_file === f.path || r.input_file.toLowerCase() === f.path.toLowerCase());
                 if (result) {
                     return {
                         ...f,
@@ -254,8 +253,8 @@ export function AudioConverterPage() {
                 }
                 return f;
             }));
-            const successCount = results.filter((r) => r.success).length;
-            const failCount = results.filter((r) => !r.success).length;
+            const successCount = results.filter((r: any) => r.success).length;
+            const failCount = results.filter((r: any) => !r.success).length;
             if (successCount > 0) {
                 toast.success("Conversion Complete", {
                     description: `Successfully converted ${successCount} file(s)${failCount > 0 ? `, ${failCount} failed` : ""}`,
@@ -280,13 +279,13 @@ export function AudioConverterPage() {
     const getStatusIcon = (status: AudioFile["status"]) => {
         switch (status) {
             case "converting":
-                return <Spinner className="h-4 w-4 text-primary"/>;
+                return <Spinner className="h-4 w-4 text-primary" />;
             case "success":
-                return <CheckCircle2 className="h-4 w-4 text-green-500"/>;
+                return <CheckCircle2 className="h-4 w-4 text-green-500" />;
             case "error":
-                return <AlertCircle className="h-4 w-4 text-destructive"/>;
+                return <AlertCircle className="h-4 w-4 text-destructive" />;
             default:
-                return <FileMusic className="h-4 w-4 text-muted-foreground"/>;
+                return <FileMusic className="h-4 w-4 text-muted-foreground" />;
         }
     };
     const convertableCount = files.filter((f) => f.status === "pending" || f.status === "success").length;
@@ -297,11 +296,11 @@ export function AudioConverterPage() {
             <h1 className="text-2xl font-bold">Audio Converter</h1>
             {files.length > 0 && (<div className="flex gap-2">
                 <Button variant="outline" size="sm" onClick={handleSelectFiles}>
-                    <Upload className="h-4 w-4"/>
+                    <Upload className="h-4 w-4" />
                     Add More
                 </Button>
                 <Button variant="outline" size="sm" onClick={clearFiles} disabled={converting}>
-                    <Trash2 className="h-4 w-4"/>
+                    <Trash2 className="h-4 w-4" />
                     Clear All
                 </Button>
             </div>)}
@@ -311,26 +310,26 @@ export function AudioConverterPage() {
         <div className={`flex flex-col items-center justify-center border-2 border-dashed rounded-lg transition-all ${isFullscreen ? "flex-1 min-h-[400px]" : "h-[400px]"} ${isDragging
             ? "border-primary bg-primary/10"
             : "border-muted-foreground/30"}`} onDragOver={(e) => {
-            e.preventDefault();
-            setIsDragging(true);
-        }} onDragLeave={(e) => {
-            e.preventDefault();
-            setIsDragging(false);
-        }} onDrop={(e) => {
-            e.preventDefault();
-            setIsDragging(false);
-        }} style={{ "--wails-drop-target": "drop" } as React.CSSProperties}>
+                e.preventDefault();
+                setIsDragging(true);
+            }} onDragLeave={(e) => {
+                e.preventDefault();
+                setIsDragging(false);
+            }} onDrop={(e) => {
+                e.preventDefault();
+                setIsDragging(false);
+            }} style={{ "--wails-drop-target": "drop" } as React.CSSProperties}>
             {files.length === 0 ? (<>
                 <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-                    <Upload className="h-8 w-8 text-primary"/>
+                    <Upload className="h-8 w-8 text-primary" />
                 </div>
                 <p className="text-sm text-muted-foreground mb-4 text-center">
                     {isDragging
-                ? "Drop your audio files here"
-                : "Drag and drop audio files here, or click the button below to select"}
+                        ? "Drop your audio files here"
+                        : "Drag and drop audio files here, or click the button below to select"}
                 </p>
                 <Button onClick={handleSelectFiles} size="lg">
-                    <Upload className="h-5 w-5"/>
+                    <Upload className="h-5 w-5" />
                     Select Files
                 </Button>
                 <p className="text-xs text-muted-foreground mt-4 text-center">
@@ -344,9 +343,9 @@ export function AudioConverterPage() {
                         <div className="flex items-center gap-2">
                             <Label className="whitespace-nowrap">Format:</Label>
                             <ToggleGroup type="single" variant="outline" value={outputFormat} onValueChange={(value) => {
-                if (value && !isFormatDisabled)
-                    setOutputFormat(value as "mp3" | "m4a");
-            }} disabled={isFormatDisabled}>
+                                if (value && !isFormatDisabled)
+                                    setOutputFormat(value as "mp3" | "m4a");
+                            }} disabled={isFormatDisabled}>
                                 {!isFormatDisabled && (<ToggleGroupItem value="mp3" aria-label="MP3">
                                     MP3
                                 </ToggleGroupItem>)}
@@ -359,9 +358,9 @@ export function AudioConverterPage() {
                         {outputFormat === "m4a" && hasFlacFiles && (<div className="flex items-center gap-2">
                             <Label className="whitespace-nowrap">Codec:</Label>
                             <ToggleGroup type="single" variant="outline" value={m4aCodec} onValueChange={(value) => {
-                    if (value)
-                        setM4aCodec(value as "aac" | "alac");
-                }}>
+                                if (value)
+                                    setM4aCodec(value as "aac" | "alac");
+                            }}>
                                 {M4A_CODEC_OPTIONS.map((option) => (<ToggleGroupItem key={option.value} value={option.value} aria-label={option.label}>
                                     {option.label}
                                 </ToggleGroupItem>))}
@@ -371,9 +370,9 @@ export function AudioConverterPage() {
                         {!(outputFormat === "m4a" && m4aCodec === "alac") && (<div className="flex items-center gap-2">
                             <Label className="whitespace-nowrap">Bitrate:</Label>
                             <ToggleGroup type="single" variant="outline" value={bitrate} onValueChange={(value) => {
-                    if (value)
-                        setBitrate(value);
-                }}>
+                                if (value)
+                                    setBitrate(value);
+                            }}>
                                 {BITRATE_OPTIONS.map((option) => (<ToggleGroupItem key={option.value} value={option.value} aria-label={option.label}>
                                     {option.label}
                                 </ToggleGroupItem>))}
@@ -406,7 +405,7 @@ export function AudioConverterPage() {
                             {file.format}
                         </span>
                         {file.status !== "converting" && (<Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => removeFile(file.path)} disabled={converting}>
-                            <X className="h-4 w-4"/>
+                            <X className="h-4 w-4" />
                         </Button>)}
                     </div>))}
                 </div>
@@ -415,10 +414,10 @@ export function AudioConverterPage() {
                 <div className="flex justify-center pt-4 border-t shrink-0">
                     <Button onClick={handleConvert} disabled={converting || convertableCount === 0} size="lg">
                         {converting ? (<>
-                            <Spinner className="h-4 w-4"/>
+                            <Spinner className="h-4 w-4" />
                             Converting...
                         </>) : (<>
-                            <WandSparkles className="h-4 w-4"/>
+                            <WandSparkles className="h-4 w-4" />
                             Convert {convertableCount > 0 ? `${convertableCount} File(s)` : ""}
                         </>)}
                     </Button>

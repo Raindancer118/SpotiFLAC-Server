@@ -265,6 +265,53 @@ class ApiClient {
         console.warn('CreateM3U8File not implemented');
     }
 
+    async CheckTrackAvailability(spotifyUrl: string): Promise<any> {
+        return this.fetch('/api/analysis/availability', {
+            method: 'POST',
+            body: JSON.stringify({ spotify_url: spotifyUrl }),
+        });
+    }
+
+    async GetPreviewURL(spotifyID: string): Promise<string> {
+        const data = await this.fetch<{ preview_url: string }>('/api/preview/' + spotifyID);
+        return data.preview_url || '';
+    }
+
+    async ConvertAudio(req: {
+        input_path: string;
+        output_format: string;
+        bitrate?: string;
+    }): Promise<any> {
+        return this.fetch('/api/convert/audio', {
+            method: 'POST',
+            body: JSON.stringify(req),
+        });
+    }
+
+    async SelectAudioFiles(): Promise<string[]> {
+        // Cannot select files from web browser in the same way
+        console.warn('SelectAudioFiles not available in web mode');
+        return [];
+    }
+
+    async SelectImageVideo(): Promise<string[]> {
+        // Cannot select files from web browser
+        console.warn('SelectImageVideo not available in web mode');
+        return [];
+    }
+
+    async UploadImage(filePath: string): Promise<string> {
+        // Would need multipart upload endpoint
+        console.warn('UploadImage would need file upload endpoint');
+        return '';
+    }
+
+    async UploadImageBytes(imageData: Uint8Array, filename: string): Promise<string> {
+        // Would need multipart upload endpoint
+        console.warn('UploadImageBytes would need file upload endpoint');
+        return '';
+    }
+
     async Quit(): Promise<void> {
         // Not applicable in web mode
         window.close();

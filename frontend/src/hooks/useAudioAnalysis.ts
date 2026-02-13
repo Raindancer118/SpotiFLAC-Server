@@ -64,7 +64,7 @@ export function useAudioAnalysis() {
         try {
             logger.info(`Analyzing audio file: ${filePath}`);
             const startTime = Date.now();
-            const response = await AnalyzeTrack(filePath);
+            const response = await apiClient.AnalyzeTrack(filePath);
             const analysisResult: AnalysisResult = JSON.parse(response);
             const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
             logger.success(`Audio analysis completed in ${elapsed}s`);

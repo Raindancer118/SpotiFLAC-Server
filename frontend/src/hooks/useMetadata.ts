@@ -4,6 +4,7 @@ import { fetchSpotifyMetadata } from "@/lib/api";
 import { toastWithSound as toast } from "@/lib/toast-with-sound";
 import { logger } from "@/lib/logger";
 import type { SpotifyMetadataResponse } from "@/types/api";
+import { apiClient } from "../api/client";
 export function useMetadata() {
     const [loading, setLoading] = useState(false);
     const [metadata, setMetadata] = useState<SpotifyMetadataResponse | null>(null);
@@ -62,7 +63,7 @@ export function useMetadata() {
                 image = data.artist_info.images;
             }
             const jsonStr = JSON.stringify(data);
-            await AddFetchHistory({
+            await apiClient.AddFetchHistory({
                 id: crypto.randomUUID(),
                 url: url,
                 type: type,
