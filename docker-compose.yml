@@ -25,9 +25,12 @@ services:
       - SERVER_PORT=8080
       - WEB_DIR=/app/web
 
-      # Spotify credentials (set these in .env file)
-      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
-      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+      # Service API URLs (Optional - uses public APIs by default)
+      # The app downloads from Tidal, Qobuz, and Amazon Music
+      # No Spotify API credentials needed!
+      # - TIDAL_API_URL=https://tidal.kinoplus.online
+      # - QOBUZ_API_URL=https://qobuz.kinoplus.online
+      # - AMAZON_API_URL=https://amazon.kinoplus.online
 
       # Optional: Database path
       - DATABASE_PATH=/app/data/spotiflac.db
