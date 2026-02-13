@@ -42,6 +42,19 @@ export const WindowClose = (): void => {
     window.close();
 };
 
+/**
+ * File drop functions - HTML5 drag & drop for web
+ */
+export const OnFileDrop = (callback: (x: number, y: number, paths: string[]) => void): void => {
+    console.warn('OnFileDrop - not yet implemented for web mode');
+    // TODO: Implement HTML5 drag & drop
+};
+
+export const OnFileDropOff = (): void => {
+    console.warn('OnFileDropOff - not yet implemented for web mode');
+    // TODO: Remove HTML5 drag & drop listeners
+};
+
 // Re-export everything as default for compatibility
 export default {
     Quit,
@@ -51,4 +64,6 @@ export default {
     WindowMaximise,
     WindowToggleMaximise,
     WindowClose,
+    OnFileDrop,
+    OnFileDropOff,
 };

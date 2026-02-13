@@ -7,7 +7,6 @@ import { getSettings, getSettingsWithDefaults, loadSettings, saveSettings, apply
 import { applyTheme } from "@/lib/themes";
 import { apiClient } from "./api/client";
 import { EventsOn, EventsOff } from "./api/websocket";
-import { Quit } from "./api/runtime";
 
 // Replace Wails functions with API client
 const OpenFolder = (path: string) => apiClient.OpenFolder(path);
