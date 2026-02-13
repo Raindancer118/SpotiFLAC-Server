@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { GetPreviewURL } from "@/../wailsjs/go/main/App";
 import { toast } from "sonner";
+import { apiClient } from "../api/client";
 export function usePreview() {
     const [loadingPreview, setLoadingPreview] = useState<string | null>(null);
     const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);

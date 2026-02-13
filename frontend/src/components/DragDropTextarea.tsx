@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import type { DragEvent } from "react";
-import { UploadImageBytes, UploadImage, SelectImageVideo } from "../../wailsjs/go/main/App";
 import { Upload, Loader2, ImagePlus, X, Check, FileVideo, ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { apiClient } from "../api/client";
 interface UploadedFile {
     id: string;
     name: string;

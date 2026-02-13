@@ -3,9 +3,8 @@ import { X, Download, CheckCircle2, XCircle, Clock, FileCheck, Trash2, HardDrive
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { GetDownloadQueue, ClearCompletedDownloads, ClearAllDownloads, ExportFailedDownloads } from "../../wailsjs/go/main/App";
 import { toastWithSound as toast } from "@/lib/toast-with-sound";
-import { backend } from "../../wailsjs/go/models";
+import { apiClient } from "../api/client";
 interface DownloadQueueProps {
     isOpen: boolean;
     onClose: () => void;

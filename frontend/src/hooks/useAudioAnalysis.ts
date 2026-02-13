@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
-import { AnalyzeTrack } from "../../wailsjs/go/main/App";
 import type { AnalysisResult } from "@/types/api";
 import { logger } from "@/lib/logger";
 import { toastWithSound as toast } from "@/lib/toast-with-sound";
 import { setSpectrumCache, getSpectrumCache, clearSpectrumCache } from "@/lib/spectrum-cache";
+import { apiClient } from "../api/client";
 const STORAGE_KEY = "spotiflac_audio_analysis_state";
 export function useAudioAnalysis() {
     const [analyzing, setAnalyzing] = useState(false);

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { openExternal } from "@/lib/utils";
-import { GetOSInfo } from "../../wailsjs/go/main/App";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -20,6 +19,7 @@ import KofiLogo from "@/assets/kofi_symbol.svg";
 import { langColors } from "@/assets/github-lang-colors";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DragDropMedia } from "./DragDropTextarea";
+import { apiClient } from "../api/client";
 interface AboutPageProps {
     version: string;
 }

@@ -4,9 +4,9 @@ import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem, } from "@/components/ui/toggle-group";
 import { Upload, X, CheckCircle2, AlertCircle, Trash2, FileMusic, WandSparkles, } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
-import { ConvertAudio, SelectAudioFiles, } from "../../wailsjs/go/main/App";
 import { toastWithSound as toast } from "@/lib/toast-with-sound";
-import { OnFileDrop, OnFileDropOff } from "../../wailsjs/runtime/runtime";
+import { apiClient } from "../api/client";
+import { WindowMinimise, WindowToggleMaximise, Quit, OnFileDrop, OnFileDropOff } from "../api/runtime";
 interface AudioFile {
     path: string;
     name: string;

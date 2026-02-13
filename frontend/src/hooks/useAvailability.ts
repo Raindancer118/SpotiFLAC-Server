@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
-import { CheckTrackAvailability } from "../../wailsjs/go/main/App";
 import type { TrackAvailability } from "@/types/api";
 import { logger } from "@/lib/logger";
+import { apiClient } from "../api/client";
 export function useAvailability() {
     const [checking, setChecking] = useState(false);
     const [checkingTrackId, setCheckingTrackId] = useState<string | null>(null);

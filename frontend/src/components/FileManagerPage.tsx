@@ -8,11 +8,10 @@ import { FolderOpen, RefreshCw, FileMusic, ChevronRight, ChevronDown, Pencil, Ey
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Spinner } from "@/components/ui/spinner";
 import { Badge } from "@/components/ui/badge";
-import { SelectFolder } from "../../wailsjs/go/main/App";
-import { backend } from "../../wailsjs/go/models";
 import { toastWithSound as toast } from "@/lib/toast-with-sound";
 import { getSettings } from "@/lib/settings";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, } from "@/components/ui/dialog";
+import { apiClient } from "../api/client";
 const ListDirectoryFiles = (path: string): Promise<backend.FileInfo[]> => (window as any)['go']['main']['App']['ListDirectoryFiles'](path);
 const PreviewRenameFiles = (files: string[], format: string): Promise<backend.RenamePreview[]> => (window as any)['go']['main']['App']['PreviewRenameFiles'](files, format);
 const RenameFilesByMetadata = (files: string[], format: string): Promise<backend.RenameResult[]> => (window as any)['go']['main']['App']['RenameFilesByMetadata'](files, format);

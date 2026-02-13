@@ -39,6 +39,7 @@ import { useCover } from "@/hooks/useCover";
 import { useAvailability } from "@/hooks/useAvailability";
 import { useDownloadQueueDialog } from "@/hooks/useDownloadQueueDialog";
 import { useDownloadProgress } from "@/hooks/useDownloadProgress";
+import { WindowMinimise, WindowToggleMaximise, Quit, OnFileDrop, OnFileDropOff } from "./api/runtime";
 const HISTORY_KEY = "spotiflac_fetch_history";
 const MAX_HISTORY = 5;
 function App() {

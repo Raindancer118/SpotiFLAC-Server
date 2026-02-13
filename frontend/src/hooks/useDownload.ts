@@ -5,6 +5,8 @@ import { toastWithSound as toast } from "@/lib/toast-with-sound";
 import { joinPath, sanitizePath } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import type { TrackMetadata } from "@/types/api";
+import { apiClient } from "../api/client";
+import type { SearchResponse, DownloadItem, DownloadQueueResponse } from "@/types/backend";
 function getFirstArtist(artistString: string): string {
     if (!artistString)
         return artistString;
@@ -146,7 +148,7 @@ export function useDownload(region: string) {
                 console.warn("File existence check failed:", err);
             }
         }
-        const { AddToDownloadQueue } = await import("../../wailsjs/go/main/App");
+        const {  AddToDownloadQueue  } = apiClient;
         let itemID: string | undefined;
         if (!fileExists) {
             itemID = await AddToDownloadQueue(id, trackName || "", displayArtist || "", albumName || "");
@@ -155,7 +157,7 @@ export function useDownload(region: string) {
             let streamingURLs: any = null;
             if (spotifyId) {
                 try {
-                    const { GetStreamingURLs } = await import("../../wailsjs/go/main/App");
+                    const {  GetStreamingURLs  } = apiClient;
                     const urlsJson = await GetStreamingURLs(spotifyId, region);
                     streamingURLs = JSON.parse(urlsJson);
                 }
@@ -298,7 +300,7 @@ export function useDownload(region: string) {
                 }
             }
             if (itemID) {
-                const { MarkDownloadItemFailed } = await import("../../wailsjs/go/main/App");
+                const {  MarkDownloadItemFailed  } = apiClient;
                 await MarkDownloadItemFailed(itemID, lastResponse.error || "All services failed");
             }
             return lastResponse;
@@ -339,7 +341,7 @@ export function useDownload(region: string) {
             publisher: publisher,
         });
         if (!singleServiceResponse.success && itemID) {
-            const { MarkDownloadItemFailed } = await import("../../wailsjs/go/main/App");
+            const {  MarkDownloadItemFailed  } = apiClient;
             await MarkDownloadItemFailed(itemID, singleServiceResponse.error || "Download failed");
         }
         return singleServiceResponse;
@@ -406,7 +408,7 @@ export function useDownload(region: string) {
             let streamingURLs: any = null;
             if (spotifyId) {
                 try {
-                    const { GetStreamingURLs } = await import("../../wailsjs/go/main/App");
+                    const {  GetStreamingURLs  } = apiClient;
                     const urlsJson = await GetStreamingURLs(spotifyId, region);
                     streamingURLs = JSON.parse(urlsJson);
                 }
@@ -543,7 +545,7 @@ export function useDownload(region: string) {
                 }
             }
             if (!lastResponse.success && itemID) {
-                const { MarkDownloadItemFailed } = await import("../../wailsjs/go/main/App");
+                const {  MarkDownloadItemFailed  } = apiClient;
                 await MarkDownloadItemFailed(itemID, lastResponse.error || "All services failed");
             }
             return lastResponse;
@@ -584,7 +586,7 @@ export function useDownload(region: string) {
             publisher: publisher,
         });
         if (!singleServiceResponse.success && itemID) {
-            const { MarkDownloadItemFailed } = await import("../../wailsjs/go/main/App");
+            const {  MarkDownloadItemFailed  } = apiClient;
             await MarkDownloadItemFailed(itemID, singleServiceResponse.error || "Download failed");
         }
         return singleServiceResponse;
@@ -682,7 +684,7 @@ export function useDownload(region: string) {
             }
         }
         logger.info(`found ${existingSpotifyIDs.size} existing files`);
-        const { AddToDownloadQueue } = await import("../../wailsjs/go/main/App");
+        const {  AddToDownloadQueue  } = apiClient;
         const itemIDs: string[] = [];
         for (const id of selectedTracks) {
             const track = allTracks.find((t) => t.spotify_id === id);
@@ -755,7 +757,7 @@ export function useDownload(region: string) {
                 logger.error(`error: ${track.name} - ${err}`);
                 setFailedTracks((prev) => new Set(prev).add(id));
                 if (itemID) {
-                    const { MarkDownloadItemFailed } = await import("../../wailsjs/go/main/App");
+                    const {  MarkDownloadItemFailed  } = apiClient;
                     await MarkDownloadItemFailed(itemID, err instanceof Error ? err.message : String(err));
                 }
             }
@@ -767,7 +769,7 @@ export function useDownload(region: string) {
         setIsDownloading(false);
         setBulkDownloadType(null);
         shouldStopDownloadRef.current = false;
-        const { CancelAllQueuedItems } = await import("../../wailsjs/go/main/App");
+        const {  CancelAllQueuedItems  } = apiClient;
         await CancelAllQueuedItems();
         if (settings.createM3u8File && folderName) {
             const paths = selectedTrackObjects.map((t) => finalFilePaths.get(t.spotify_id || "") || "").filter((p) => p !== "");
@@ -855,7 +857,7 @@ export function useDownload(region: string) {
             }
         }
         logger.info(`found ${existingSpotifyIDs.size} existing files`);
-        const { AddToDownloadQueue } = await import("../../wailsjs/go/main/App");
+        const {  AddToDownloadQueue  } = apiClient;
         const itemIDs: string[] = [];
         for (const track of tracksWithId) {
             const displayArtist = settings.useFirstArtistOnly && track.artists ? getFirstArtist(track.artists) : track.artists;
@@ -923,7 +925,7 @@ export function useDownload(region: string) {
                 errorCount++;
                 logger.error(`error: ${track.name} - ${err}`);
                 setFailedTracks((prev) => new Set(prev).add(trackId));
-                const { MarkDownloadItemFailed } = await import("../../wailsjs/go/main/App");
+                const {  MarkDownloadItemFailed  } = apiClient;
                 await MarkDownloadItemFailed(itemID, err instanceof Error ? err.message : String(err));
             }
             const completedCount = skippedCount + successCount + errorCount;
@@ -934,7 +936,7 @@ export function useDownload(region: string) {
         setIsDownloading(false);
         setBulkDownloadType(null);
         shouldStopDownloadRef.current = false;
-        const { CancelAllQueuedItems: CancelQueued } = await import("../../wailsjs/go/main/App");
+        const {  CancelAllQueuedItems: CancelQueued  } = apiClient;
         await CancelQueued();
         if (settings.createM3u8File && folderName) {
             try {
